@@ -2,7 +2,7 @@
 #define CRYSTAL_UTIL_LOG_H_
 
 #include <string_view> // std::string_view
-#include <filesystem> // std::filesystem::path
+#include <ostream> // std::ostream
 #include <memory> // std::unique_ptr
 #include <format> // std::format
 
@@ -11,7 +11,7 @@ namespace util {
 class Logger {
 public:
   /* Constructor & Destructor */
-  explicit Logger(std::filesystem::path file = "log.txt");
+  explicit Logger(std::ostream& os);
   ~Logger();
   /* Functions */
   template<typename... Args>

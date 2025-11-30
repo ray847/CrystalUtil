@@ -6,7 +6,7 @@
 int main() {
   std::cout << "Hello from " << crystal::util::kNAME << std::endl;
   using crystal::util::Logger;
-  Logger logger("from_main.txt");
+  Logger logger(std::clog);
   constexpr std::string_view format = "{}. This is a {} log.";
   logger.Info(format, 1, "information");
   logger.Debug(format, 2, "debugging");

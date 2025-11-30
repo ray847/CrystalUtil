@@ -1,21 +1,21 @@
 #include "CrystalUtil/log.h"
 
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/basic_file_sink.h"
-#include <format>
-#include <memory>
+#include <spdlog/spdlog.h> // spdlog::logger
+#include <spdlog/sinks/ostream_sink.h> // spdlog::sinks::ostream_sink_mt
+#include <format> // std:format_args, std::vformat
+#include <memory> // std::shared_ptr
 
 namespace crystal::util {
 struct Logger::Impl {
-  std::shared_ptr<spdlog::logger> logger;
+  std::shared_ptr<spdlog::sinks::ostream_sink_mt> sink = nullptr;
+  std::shared_ptr<spdlog::logger> logger = nullptr;
 };
 
-Logger::Logger(std::filesystem::path file):
-  pimpl_(
-    std::make_unique<Impl>(
-      spdlog::basic_logger_mt("basic_logger", file.string())
-    )
-  ) {}
+Logger::Logger(std::ostream& os) : pimpl_(std::make_unique<Impl>()) {
+  pimpl_->sink = std::make_shared<spdlog::sinks::ostream_sink_mt>(os);
+  pimpl_->logger = std::make_shared<spdlog::logger>("os_mt_logger",
+                                                    pimpl_->sink);
+}
 Logger::~Logger() = default;
 void Logger::InfoImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
