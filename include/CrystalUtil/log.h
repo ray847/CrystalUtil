@@ -5,6 +5,7 @@
 #include <ostream> // std::ostream
 #include <memory> // std::unique_ptr
 #include <format> // std::format
+#include <filesystem> // std::filesystem::path
 
 namespace crystal {
 namespace util {
@@ -12,6 +13,7 @@ class Logger {
 public:
   /* Constructor & Destructor */
   explicit Logger(std::ostream& os);
+  explicit Logger(std::filesystem::path path);
   ~Logger();
   /* Functions */
   template<typename... Args>

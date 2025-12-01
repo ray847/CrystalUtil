@@ -2,18 +2,25 @@
 
 #include <spdlog/spdlog.h> // spdlog::logger
 #include <spdlog/sinks/ostream_sink.h> // spdlog::sinks::ostream_sink_mt
+#include <spdlog/sinks/basic_file_sink.h> // spdlog::sinks::basic_file_sink_mt
 #include <format> // std:format_args, std::vformat
 #include <memory> // std::shared_ptr
+#include <fstream> // std::ofstream
 
 namespace crystal::util {
 struct Logger::Impl {
-  std::shared_ptr<spdlog::sinks::ostream_sink_mt> sink = nullptr;
+  std::shared_ptr<spdlog::sinks::sink> sink = nullptr;
   std::shared_ptr<spdlog::logger> logger = nullptr;
 };
 
 Logger::Logger(std::ostream& os) : pimpl_(std::make_unique<Impl>()) {
   pimpl_->sink = std::make_shared<spdlog::sinks::ostream_sink_mt>(os);
   pimpl_->logger = std::make_shared<spdlog::logger>("os_mt_logger",
+                                                    pimpl_->sink);
+}
+Logger::Logger(std::filesystem::path path) : pimpl_(std::make_unique<Impl>()) {
+  pimpl_->sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path);
+  pimpl_->logger = std::make_shared<spdlog::logger>("file_mt_logger",
                                                     pimpl_->sink);
 }
 Logger::~Logger() = default;
