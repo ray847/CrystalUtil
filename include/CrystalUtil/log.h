@@ -11,21 +11,10 @@ namespace crystal {
 namespace util {
 class Logger {
 public:
-  /* Differenct Log Levels. */
-  enum class Level {
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
-    CRITICAL,
-  };
   /* Constructor & Destructor */
-  explicit Logger(std::ostream& os);
-  explicit Logger(std::filesystem::path path);
+  explicit Logger(std::filesystem::path dir);
   ~Logger();
   /* Functions */
-  void SetLevel(Level level);
   template<typename... Args>
   void Trace(std::format_string<Args...> fmt, Args&&... args) {
     TraceImpl(fmt.get(), std::make_format_args(args...));
