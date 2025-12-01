@@ -10,6 +10,8 @@
 namespace crystal::util {
 spdlog::level::level_enum ToSpdlogLevel(Logger::Level level) {
   switch (level) {
+    case Logger::Level::TRACE:
+      return spdlog::level::trace;
     case Logger::Level::DEBUG:
       return spdlog::level::debug;
     case Logger::Level::INFO:
@@ -47,13 +49,17 @@ Logger::~Logger() = default;
 void Logger::SetLevel(Level level) {
   pimpl_->logger->set_level(ToSpdlogLevel(level));
 }
-void Logger::InfoImpl(std::string_view fmt, std::format_args args) {
+void Logger::TraceImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
-  pimpl_->logger->info(msg);
+  pimpl_->logger->trace(msg);
 }
 void Logger::DebugImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
   pimpl_->logger->debug(msg);
+}
+void Logger::InfoImpl(std::string_view fmt, std::format_args args) {
+  std::string msg = std::vformat(fmt, args);
+  pimpl_->logger->info(msg);
 }
 void Logger::WarnImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);

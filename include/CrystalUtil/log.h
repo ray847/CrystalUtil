@@ -13,6 +13,7 @@ class Logger {
 public:
   /* Differenct Log Levels. */
   enum class Level {
+    TRACE,
     DEBUG,
     INFO,
     WARN,
@@ -26,12 +27,16 @@ public:
   /* Functions */
   void SetLevel(Level level);
   template<typename... Args>
-  void Info(std::format_string<Args...> fmt, Args&&... args) {
-    InfoImpl(fmt.get(), std::make_format_args(args...));
+  void Trace(std::format_string<Args...> fmt, Args&&... args) {
+    TraceImpl(fmt.get(), std::make_format_args(args...));
   }
   template<typename... Args>
   void Debug(std::format_string<Args...> fmt, Args&&... args) {
     DebugImpl(fmt.get(), std::make_format_args(args...));
+  }
+  template<typename... Args>
+  void Info(std::format_string<Args...> fmt, Args&&... args) {
+    InfoImpl(fmt.get(), std::make_format_args(args...));
   }
   template<typename... Args>
   void Warn(std::format_string<Args...> fmt, Args&&... args) {
@@ -51,8 +56,9 @@ private:
   /* Variables */
   std::unique_ptr<Impl> pimpl_;
   /* Functions */
-  void InfoImpl(std::string_view fmt, std::format_args args);
+  void TraceImpl(std::string_view fmt, std::format_args args);
   void DebugImpl(std::string_view fmt, std::format_args args);
+  void InfoImpl(std::string_view fmt, std::format_args args);
   void WarnImpl(std::string_view fmt, std::format_args args);
   void ErrorImpl(std::string_view fmt, std::format_args args);
   void CriticalImpl(std::string_view fmt, std::format_args args);
