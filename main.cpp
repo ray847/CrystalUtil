@@ -8,6 +8,7 @@ int main() {
   using crystal::util::Logger;
   {
     Logger logger(std::clog);
+    logger.SetLevel(Logger::Level::DEBUG);
     constexpr std::string_view format = "{}. This is a {} log.";
     logger.Info(format, 1, "information");
     logger.Debug(format, 2, "debugging");
@@ -16,6 +17,7 @@ int main() {
     logger.Critical(format, 5, "critical");
   } {
     Logger logger("from_main.log");
+    logger.SetLevel(Logger::Level::DEBUG);
     constexpr std::string_view format = "{}. This is a {} log.";
     logger.Info(format, 1, "information");
     logger.Debug(format, 2, "debugging");
