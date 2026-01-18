@@ -24,11 +24,11 @@ Logger::Logger(std::filesystem::path dir) : pimpl_(std::make_unique<Impl>()) {
   }
   /* Initialize the normal logger & error logger. */
   pimpl_->logger = spdlog::basic_logger_mt("normal_logger",
-                                           dir / "logs.log",
+                                           (dir / "logs.log").string(),
                                            true);
   pimpl_->logger->set_level(spdlog::level::trace);
   pimpl_->error_logger = spdlog::basic_logger_mt("error_logger",
-                                                 dir / "error_logs.log",
+                                                 (dir / "error_logs.log").string(),
                                                  true);
   pimpl_->error_logger->set_level(spdlog::level::warn);
 }

@@ -3,7 +3,7 @@
 
 #include <string_view> // std::string_view
 
-#include "CrystalUtil/log.h"
+#include "log.h"
 
 namespace crystal::util {
 inline constexpr std::string_view kNAME{"CrystalUtility"};
