@@ -1,45 +1,48 @@
 #ifndef CRYSTAL_UTIL_LOG_H_
 #define CRYSTAL_UTIL_LOG_H_
 
+#include <cstddef> // nullptr_t
+
+#include <filesystem>  // std::filesystem::path
+#include <format>      // std::format
+#include <memory>      // std::unique_ptr
 #include <string_view> // std::string_view
-#include <ostream> // std::ostream
-#include <memory> // std::unique_ptr
-#include <format> // std::format
-#include <filesystem> // std::filesystem::path
 
 namespace crystal {
 namespace util {
 class Logger {
-public:
+ public:
   /* Constructor & Destructor */
   explicit Logger(std::filesystem::path dir);
+  explicit Logger(nullptr_t null = nullptr); // default constructor
   ~Logger();
   /* Functions */
-  template<typename... Args>
+  template <typename... Args>
   void Trace(std::format_string<Args...> fmt, Args&&... args) {
     TraceImpl(fmt.get(), std::make_format_args(args...));
   }
-  template<typename... Args>
+  template <typename... Args>
   void Debug(std::format_string<Args...> fmt, Args&&... args) {
     DebugImpl(fmt.get(), std::make_format_args(args...));
   }
-  template<typename... Args>
+  template <typename... Args>
   void Info(std::format_string<Args...> fmt, Args&&... args) {
     InfoImpl(fmt.get(), std::make_format_args(args...));
   }
-  template<typename... Args>
+  template <typename... Args>
   void Warn(std::format_string<Args...> fmt, Args&&... args) {
     WarnImpl(fmt.get(), std::make_format_args(args...));
   }
-  template<typename... Args>
+  template <typename... Args>
   void Error(std::format_string<Args...> fmt, Args&&... args) {
     ErrorImpl(fmt.get(), std::make_format_args(args...));
   }
-  template<typename... Args>
+  template <typename... Args>
   void Critical(std::format_string<Args...> fmt, Args&&... args) {
     CriticalImpl(fmt.get(), std::make_format_args(args...));
   }
-private:
+
+ private:
   /* Forward Declaration */
   struct Impl;
   /* Variables */
