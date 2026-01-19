@@ -2,4 +2,3 @@
 
 ## Functions
 * Logging
-* io

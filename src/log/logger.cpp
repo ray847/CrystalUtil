@@ -24,12 +24,31 @@ Logger::Logger(std::filesystem::path dir) : pimpl_(std::make_unique<Impl>()) {
     throw std::format("{} is not a directory", dir.string());
   }
   /* Initialize the normal logger & error logger. */
-  pimpl_->logger = spdlog::basic_logger_mt("normal_logger",
-                                           (dir / "logs.log").string(), true);
+  pimpl_->logger = spdlog::basic_logger_mt(
+      std::format("normal_logger({})", reinterpret_cast<void*>(this)),
+      (dir / "logs.log").string(), true);
   pimpl_->logger->set_level(spdlog::level::trace);
   pimpl_->error_logger = spdlog::basic_logger_mt(
-      "error_logger", (dir / "error_logs.log").string(), true);
+      std::format("error_logger({})", reinterpret_cast<void*>(this)),
+      (dir / "error_logs.log").string(), true);
   pimpl_->error_logger->set_level(spdlog::level::warn);
+}
+Logger::Logger(const Logger& logger) {
+  if (logger.pimpl_) [[likely]] {
+    pimpl_ = std::make_unique<Impl>();
+    pimpl_->logger = logger.pimpl_->logger;
+    pimpl_->error_logger = logger.pimpl_->error_logger;
+  }
+}
+Logger& Logger::operator=(const Logger& rhs) {
+  if (rhs.pimpl_) [[likely]] {
+    pimpl_ = std::make_unique<Impl>();
+    pimpl_->logger = rhs.pimpl_->logger;
+    pimpl_->error_logger = rhs.pimpl_->error_logger;
+  } else {
+    pimpl_ = nullptr;
+  }
+  return *this;
 }
 Logger::Logger(nullptr_t) {}
 Logger::~Logger() = default;

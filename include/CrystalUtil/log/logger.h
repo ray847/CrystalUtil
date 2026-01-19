@@ -12,13 +12,13 @@ namespace crystal {
 namespace util {
 /**
  * Abstracted logger.
- * 
+ *
  * This logger logs to 2 files.
  * One for all logs and one for the error logs(warn, error, critical).
  * This class is also nullable.
  * The default constructor constructs a null logger that doesn't log to any destination.
  * To construct a valie logger, use the constructor that takes in a path to the log files.
- * 
+ *
  * Supported logs:
  *  * Trace
  *  * Debug
@@ -32,6 +32,8 @@ class Logger {
   /* Constructor & Destructor */
   explicit Logger(std::filesystem::path dir = "./");
   explicit Logger(nullptr_t); // default constructor
+  Logger(const Logger& logger);
+  Logger& operator=(const Logger& rhs);
   ~Logger();
   /* Functions */
   template <typename... Args>
