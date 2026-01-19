@@ -17,7 +17,7 @@ add_library(CrystalUtil)
 target_sources(CrystalUtil
   PRIVATE
     src/util.cpp
-    src/log.cpp
+    src/log/logger.cpp
 )
 target_include_directories(CrystalUtil
   PUBLIC

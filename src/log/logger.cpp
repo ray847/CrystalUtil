@@ -35,38 +35,38 @@ Logger::Logger(nullptr_t) {}
 Logger::~Logger() = default;
 void Logger::TraceImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
-  if (pimpl_->logger) [[likely]]
+  if (pimpl_) [[likely]]
     pimpl_->logger->trace(msg);
 }
 void Logger::DebugImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
-  if (pimpl_->logger) [[likely]]
+  if (pimpl_) [[likely]]
     pimpl_->logger->debug(msg);
 }
 void Logger::InfoImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
-  if (pimpl_->logger) [[likely]]
+  if (pimpl_) [[likely]]
     pimpl_->logger->info(msg);
 }
 void Logger::WarnImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
-  if (pimpl_->logger)
-    pimpl_->logger->warn(msg);
-  if (pimpl_->error_logger)
+  if (pimpl_) [[likely]] {
+    pimpl_->logger->warn(msg); [[likely]]
     pimpl_->error_logger->warn(msg);
+  }
 }
 void Logger::ErrorImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
-  if (pimpl_->logger)
+  if (pimpl_) [[likely]] {
     pimpl_->logger->error(msg);
-  if (pimpl_->error_logger)
     pimpl_->error_logger->error(msg);
+  }
 }
 void Logger::CriticalImpl(std::string_view fmt, std::format_args args) {
   std::string msg = std::vformat(fmt, args);
-  if (pimpl_->logger)
+  if (pimpl_) [[likely]] {
     pimpl_->logger->critical(msg);
-  if (pimpl_->error_logger)
     pimpl_->error_logger->critical(msg);
+  }
 }
 } // namespace crystal::util
